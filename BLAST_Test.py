@@ -15,7 +15,12 @@ for alignment in blast_record.alignments:
     for hsp in alignment.hsps:
         if hsp.expect < E_VALUE_THRESH:
             print('****Alignment****')
-            print('sequence:', alignment.title)
+            s = alignment.title
+            l = s.split("|")
+            s = l[4].rstrip()
+            l = s.split(" ")
+            s = l[0] + ' ' + l[1] + ' ' + l[2] #????
+            print('Organism:', s)
             print('length:', alignment.length)
             print('e value:', hsp.expect)
             print(hsp.query[0:75])
