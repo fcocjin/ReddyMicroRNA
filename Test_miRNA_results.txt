@@ -1,0 +1,4 @@
+Organism_name	Query_start	Query_end	Subject_start	Subject_end
+Gallus gallus microRNA	1	22	39	60
+Gallus gallus microRNA	1	20	20	1
+
