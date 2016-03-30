@@ -1,3 +1,7 @@
+#!/Library/Frameworks/Python.framework/Versions/2.7/bin/python
+
+
+
 # This program just takes in a file that I have on my computer so that I could practice BLASTing from python.
 # I know that I will need to adjust this when we make our own database, but I
 # wanted to get started on practicing the code even before the database was constructed
@@ -23,30 +27,31 @@ def parsefile(blast_record, writer):  # This function writes the desired informa
         writer.write(s + '\t' + str(hsp.query_start) + '\t' + str(hsp.query_end) + '\t' + str(hsp.sbjct_start) +
                      '\t' + str(hsp.sbjct_end) + '\n') # Writes the information Reddy Wants
     writer.write('\n') # Writes an extra line break so that eventaully we can write multiple sequences
-    # We may have to separate by a different character/string so that we can parse individual
-    # results in the future better
+# We may have to separate by a different character/string so that we can parse individual
+# results in the future better
 
 
 def main():
-
+    
     query = input('Enter query file name: ') # For the working example, type in 'Test_miRNA.txt'
-    record = SeqIO.read(query, format="fasta")
+    records= list(SeqIO.parse(query, "fasta"))
+    #record = SeqIO.read(query, format="fasta")
     filename = input('What is your desired file name for the top hits file? ') # I used 'Test_miRNA_Results.txt'
     writer = open(filename, 'w')
     writer.write('Organism_name' + '\t' + 'Query_start' + '\t' + 'Query_end' + '\t' + 'Subject_start' + '\t' +
                  'Subject_end' + '\n') # Writes the header for the results file
     print('Now BLASTing')
-    result_handle = NCBIWWW.qblast("blastn", "nt", record.format('fasta'))  # BLASTs against the nt database
-    print('Finished BLASTing')
-    blast_record = NCBIXML.read(result_handle) #Makes the BLAST results able to be processed
-    parsefile(blast_record, writer) # Writes the information that we want
-
-    # The below commented lines are goign to be used to parse each blast_record
-    # We can use those ines after we figure out how to BLAST multiple sequences....
-    # blast_records = NCBIXML.parse(result_handle)  # NCBIXML.parse() is used for parsing through multiple BLAST results
-    # for blast_record in blast_records:
-    #     parsefile(blast_record, writer)
-
+    for record in records:
+        result_handle = NCBIWWW.qblast("blastn", "nt", record.format('fasta'))  # BLASTs against the nt database
+        blast_record = NCBIXML.read(result_handle) #Makes the BLAST results able to be processed
+        parsefile(blast_record, writer) # Writes the information that we want
+                 
+                 # The below commented lines are goign to be used to parse each blast_record
+                 # We can use those ines after we figure out how to BLAST multiple sequences....
+                 # blast_records = NCBIXML.parse(result_handle)  # NCBIXML.parse() is used for parsing through multiple BLAST results
+                 # for blast_record in blast_records:
+                 #     parsefile(blast_record, writer)
+                 
     print("Finished!")
     writer.close()
 
