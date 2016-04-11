@@ -4,10 +4,11 @@ dictionary ={} # to hold the query id and the # of occurrences
 
 import csv
 import operator
+from collections import Counter
 
 def ToCSV(csv_file,csv_columns,dict_data):
     try:
-        with open('Output.csv', 'w') as csvfile:
+        with open('Output_myedit.csv', 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=csv_columns)   # the output as a CSV Format
             writer.writeheader()
             # write the the query id and the # of occurrences
@@ -32,7 +33,21 @@ with open('gg_mat_cross_result.txt', 'r') as input:  # the input file
                 dictionary[query_id]=dictionary[query_id]+1
             else:
                 dictionary[query_id]=1
+    myfile = open('my_file_test.txt', 'w')
+    uniquefile = open('unique_hits.txt', 'w')
+    var = max(dictionary.iterkeys(), key=lambda k: dictionary[k])
+    line1 = "The miRNA that appears the most is " + var + " which appears " + str(dictionary[var]) + " times"
+    myfile.write(str(line1) + '\n')
+    sorted_dict = sorted(dictionary.iteritems(), key = lambda(k, v): (-v,k))[:500]
+    myfile.write('\n' "TOP 100 miRNAs found" + '\n' + '\n')
+    for key, value in sorted_dict:
+        output = "miRNA: " + str(key) + '\n' + "# of times found:" + str(value) + '\n' + '\n'
+        myfile.write(output)
+    for key in dictionary:
+        if int(value) == 1:
+            unique = str(key) + '\n'
+            uniquefile.write(unique)
 
 
+ToCSV(csv_file,csv_columns,dictionary)  # a call to function with three parameters ( the output file, the headers, and the dictionart)
 
-ToCSV(csv_file,csv_columns,dictionary)  # a call to function with three parametes ( the output file, the headers, and the dictionart)
