@@ -38,7 +38,7 @@ with open('gg_mat_cross_result.txt', 'r') as input:  # the input file
     var = max(dictionary.iterkeys(), key=lambda k: dictionary[k])
     line1 = "The miRNA that appears the most is " + var + " which appears " + str(dictionary[var]) + " times"
     myfile.write(str(line1) + '\n')
-    sorted_dict = sorted(dictionary.iteritems(), key = lambda(k, v): (-v,k))[:500]
+    sorted_dict = sorted(dictionary.iteritems(), key = lambda(k, v): (-v,k))[:100]
     myfile.write('\n' "TOP 100 miRNAs found" + '\n' + '\n')
     for key, value in sorted_dict:
         output = "miRNA: " + str(key) + '\n' + "# of times found:" + str(value) + '\n' + '\n'
