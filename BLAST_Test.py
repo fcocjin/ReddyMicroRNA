@@ -10,20 +10,22 @@ from Bio import SeqIO
 import os
 
 
-def parsefile(blast_record, writer):  # This function writes the desired information to the final file
+def parsefile(blast_record, writer, query_ID):  # This function writes the desired information to the final file
     if len(blast_record.alignments) != 0: # Prevents an error from occurring if there is no BLAST match
         alignment = blast_record.alignments[0] # Retrieves the best hit (first alignment)
         for hsp in alignment.hsps: # Retrieves all locations in the best hit
+            # coverage = float(float(hsp.align_length)/float(blast_record.query_length))
             # if (hsp.identities >= percent_identity): # and (hsp.query_start != hsp.sbjct_start): and
-            #  (hsp.query >= query_coverage)
-                s = alignment.title
-                l = s.split("|")
-                s = l[2]
-                l1 = s.split(" ")
-                s = l1[2] + ' ' + l1[3] # Finalized organism name
-                writer.write(s + '\t' + str(hsp.query_start) + '\t' + str(hsp.query_end) + '\t' + str(hsp.sbjct_start) +
-                             '\t' + str(hsp.sbjct_end) + '\n') # Writes the location of the subject hit
-    writer.write('\n')
+            # (coverage >= query_coverage)
+            # print(coverage)
+            s = alignment.title
+            l = s.split("|")
+            s = l[2]
+            l1 = s.split(" ")
+            s = l1[2] + ' ' + l1[3] # Finalized organism name
+            writer.write(query_ID + ',' + s + ',' + str(hsp.query_start) + ',' + str(hsp.query_end) + ',' +
+                         str(hsp.sbjct_start) + ',' + str(hsp.sbjct_end) + '\n')
+            # Writes the location of the subject hit
 
 
 def main():
@@ -33,22 +35,21 @@ def main():
     # query_coverage = input('What is your ideal cutoff query coverage?')  # I will use this later to filter results
     # percent_identity = input('What is your ideal cutoff percent identity')  # same as above
     records = SeqIO.parse(query,'fasta')  # Retrieves miRNA ID's
-    queryList = []  #Stores miRNA ID's
+    queryList = []  # Stores miRNA ID's
     for record in records:
         queryList.append(record.id)
     writer = open(filename, 'w')
-    writer.write('Organism_name' + '\t' + 'Query_start' + '\t' + 'Query_end' + '\t' + 'Subject_start' + '\t' +
-                 'Subject_end' + '\n') # Writes the header for the results file
+    writer.write('query_miRNA_ID' + ',' 'Organism_name' + ',' + 'Query_start' + ',' + 'Query_end' + ',' +
+                 'Subject_start' + ',' + 'Subject_end' + '\n')  # Writes the header for the results file
     print('Now BLASTing')
-    os.system('blastn -task blastn-short -query ' + query + ' -db Input/gg_db -out BLAST_result.xml -num_threads 8 '
+    os.system('blastn -task blastn-short -query ' + query + ' -db Input/tg_db -out BLAST_result.xml -num_threads 8 '
                                                             '-outfmt "5" ')
     print('BLAST completed, now parsing file')
     result_handle = open('BLAST_result.xml')
     blast_records = NCBIXML.parse(result_handle)
     recordCount = 0
     for blast_record in blast_records: # Writes a result for each miRNA BLASTed
-        writer.write('\r' + '*' + queryList[recordCount] + '*' + '\n')  # Labels the BLAST results
-        parsefile(blast_record,writer)
+        parsefile(blast_record,writer,queryList[recordCount])
         recordCount += 1
     writer.close()
     print('Finished!')
