@@ -40,12 +40,13 @@ def locationParser(file_handle, working_list):
 
 
 def main():
-    query = input('Enter query file name: ')  # For the working example, type in 'gg_pre_mirna_short.fasta'
+
+    query = raw_input('Enter query file name: ')  # For the working example, type in 'gg_pre_mirna_short.fasta'
     file_handle = query[0:len(query)-6]  # Stores the original file name that we can add extension file names from
-    query_coverage = float(input('What is your ideal cutoff query coverage?: '))  # The user can input a query coverage.
+    # query_coverage = float(raw_input('What is your ideal cutoff query coverage?: '))  # The user can input a query coverage.
     # Amani can add default parameters in the GUI for both query_coverage and percent identity
-    percent_identity = float(input('What is your ideal cutoff percent identity?: '))  # The user can input a percent identity cutoff
-    organism_name = input("What organism's genome is represented by the BLAST database?: ")
+    percent_identity = float(raw_input('What is your ideal cutoff percent identity?: '))  # The user can input a percent identity cutoff
+    organism_name = raw_input("What organism's genome is represented by the BLAST database?: ")
     # Not sure if this^ is still necessary since the user already knows what genomes they are inputting
     print('Now BLASTing')
     os.system('blastn -task blastn-short -query ' + query + ' -db Input/tg_db -out BLAST_result.txt -num_threads 8 '
@@ -53,7 +54,7 @@ def main():
     print('BLAST completed, now parsing file')
     count_dictionary ={}  # to hold the query id and the # of occurrences
     working_list = []  # This will hold summary information like location for ALL miRNA's
-    top100writer = open(file_handle + '_results.', 'w')  # This will write the top
+    top100writer = open(file_handle + '_results.txt', 'w')  # This will write the top
     with open('BLAST_result.txt', 'r') as input:  # Reads the results from the comma-separated BLAST output
         for line in input:
             lineList = line.strip().split()
@@ -73,7 +74,7 @@ def main():
                 else:
                     count_dictionary[query_id]=1
         var = max(count_dictionary.iterkeys(), key=lambda k: count_dictionary[k])
-        line1 = "The miRNA that appears the most is " + var + " which appears " + str(dictionary[var]) + " times"
+        line1 = "The miRNA that appears the most is " + var + " which appears " + str(count_dictionary[var]) + " times"
         top100writer.write(str(line1) + '\n')
         sorted_dict = sorted(count_dictionary.iteritems(), key = lambda(k, v): (-v,k))[:100]
         top100writer.write('\n' "TOP 100 miRNAs found" + '\n' + '\n')
@@ -82,7 +83,7 @@ def main():
             top100writer.write(output)
     top100writer.close()
 
-    summaryParser(file_handle, working_list, sorted_dict)
+    # summaryParser(file_handle, working_list, sorted_dict)
     locationParser(file_handle, working_list)
     print('Finished!')
     print('')
