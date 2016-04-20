@@ -41,7 +41,17 @@ def locationParser(file_handle, working_list):
 
 
 def main():
+    db = raw_input("Do you need to make a BLAST database? Please type Yes or No: ")
+    if db == "Yes" or db == "yes" or db == "Y" or db == "YES":
+        path = raw_input("Please type the full path to the fasta file you wish to use: ")
+        dbtype = raw_input("Please input the database type (prot for protein or nucl for nucleotide): ")
+        output = raw_input("Please enter the full path to the output destination: ")
+        database_name = raw_input("Please enter the name of your database: ")
+        os.system("makeblastdb -in " + path + " -dbtype " + dbtype + " -out " + output)
 
+    else:
+        print("ok! We will BLAST against the chicken database as a default")
+        database_name = 'Input/gg_db'
     query = raw_input('Enter query file name: ')  # For the working example, type in 'gg_pre_mirna_short.fasta'
     file_handle = query[0:len(query)-6]  # Stores the original file name that we can add extension file names from
     temp_string = raw_input('What is your ideal cutoff query coverage?: ')
@@ -56,9 +66,8 @@ def main():
         print('Since no value was inputted, BLAST will use the default percent identity of 100%')
     percent_identity = float(temp_string)  # The user can input a percent identity cutoff
     organism_name = raw_input("What organism's genome is represented by the BLAST database?: ")
-    # Not sure if this^ is still necessary since the user already knows what genomes they are inputting
     print('Now BLASTing')
-    os.system('blastn -task blastn-short -query ' + query + ' -db Input/tg_db -out BLAST_result.txt -num_threads 8 '
+    os.system('blastn -task blastn-short -query ' + query + ' -db ' + database_name + ' -out BLAST_result.txt -num_threads 8 '
                                                             '-outfmt "6 std qcovs" ')
     print('BLAST completed, now parsing file')
     count_dictionary ={}  # to hold the query id and the # of occurrences
@@ -82,6 +91,9 @@ def main():
                     count_dictionary[query_id] = count_dictionary[query_id]+1
                 else:
                     count_dictionary[query_id]=1
+        if len(count_dictionary) == 0:
+            print ("Sorry, there were no BLAST results with the given parameters")
+            return 1
         var = max(count_dictionary.iterkeys(), key=lambda k: count_dictionary[k])
         line1 = "The miRNA that appears the most is " + var + " which appears " + str(count_dictionary[var]) + " times"
         top100writer.write(str(line1) + '\n')
