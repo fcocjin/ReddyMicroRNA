@@ -67,8 +67,9 @@ def main():
     percent_identity = float(temp_string)  # The user can input a percent identity cutoff
     organism_name = raw_input("What organism's genome is represented by the BLAST database?: ")
     print('Now BLASTing')
-    os.system('blastn -task blastn-short -query ' + query + ' -db ' + database_name + ' -out BLAST_result.txt -num_threads 8 '
-                                                            '-outfmt "6 std qcovs" ')
+    blast_result_file = file_handle + '_full_BLAST_result.txt'
+    os.system('blastn -task blastn-short -query ' + query + ' -db ' + database_name + ' -out '+ blast_result_file +
+              ' -num_threads 8 -outfmt "6 std qcovs" ')
     print('BLAST completed, now parsing file')
     count_dictionary ={}  # to hold the query id and the # of occurrences
     working_list = []  # This will hold summary information like location for ALL miRNA's
@@ -109,6 +110,7 @@ def main():
     print('Finished!')
     print(file_handle + '_locations.txt will hold the locations for referencing')
     print(file_handle + '_results.txt will present the top 100 most frequent miRNAs in order')
+    print(blast_result_file + 'will hold the full BLAST result')
     print('')
 
 main()
