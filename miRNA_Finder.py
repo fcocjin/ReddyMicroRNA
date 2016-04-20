@@ -33,7 +33,8 @@ def locationParser(file_handle, working_list):
     writer = open(file_handle + '_locations.txt', 'w')  # Creates the uniform file extension
     writer.write('Query_miRNA_ID' + ',' + 'Subject_ID' + ',' + 'Organism_name' + ',' + 'Query_start' + ',' +
                  'Query_end' + ',' + 'Subject_start' + ',' +
-                 'Subject_end' + '\n')  # Writes the header for the location results file
+                 'Subject_end' + ',' + 'Percent_Identity' + ',' + 'Query_Coverage' +
+                 '\n')  # Writes the header for the location results file
     for s in working_list:
         writer.write(s + '\n')
     writer.close()
@@ -43,14 +44,22 @@ def main():
 
     query = raw_input('Enter query file name: ')  # For the working example, type in 'gg_pre_mirna_short.fasta'
     file_handle = query[0:len(query)-6]  # Stores the original file name that we can add extension file names from
-    # query_coverage = float(raw_input('What is your ideal cutoff query coverage?: '))  # The user can input a query coverage.
+    temp_string = raw_input('What is your ideal cutoff query coverage?: ')
+    if temp_string == '':
+        temp_string = '80.0'
+        print('Since no value was inputted, BLAST will use the default query coverage of 80%')
+    query_coverage = float(temp_string)  # The user can input a query coverage.
     # Amani can add default parameters in the GUI for both query_coverage and percent identity
-    percent_identity = float(raw_input('What is your ideal cutoff percent identity?: '))  # The user can input a percent identity cutoff
+    temp_string = raw_input('What is your ideal cutoff percent identity?: ')
+    if temp_string == '':
+        temp_string = '100.00'
+        print('Since no value was inputted, BLAST will use the default percent identity of 100%')
+    percent_identity = float(temp_string)  # The user can input a percent identity cutoff
     organism_name = raw_input("What organism's genome is represented by the BLAST database?: ")
     # Not sure if this^ is still necessary since the user already knows what genomes they are inputting
     print('Now BLASTing')
     os.system('blastn -task blastn-short -query ' + query + ' -db Input/tg_db -out BLAST_result.txt -num_threads 8 '
-                                                            '-outfmt "6" ')
+                                                            '-outfmt "6 std qcovs" ')
     print('BLAST completed, now parsing file')
     count_dictionary ={}  # to hold the query id and the # of occurrences
     working_list = []  # This will hold summary information like location for ALL miRNA's
@@ -61,14 +70,14 @@ def main():
             query_id = lineList[0]
             subject_id = lineList[1]
             identity = float(lineList[2])
-            # qcoverage = float(?????)
+            qcoverage = float(lineList[12])
             qstart = lineList[6]
             qend = lineList[7]
             sstart = lineList[8]
             send = lineList[9]
-            if identity >= percent_identity:  # and (qcoverage >= query_coverage):  # Filters for quality
+            if identity >= percent_identity  and (qcoverage >= query_coverage):  # Filters for quality
                 working_list.append(query_id + ',' + subject_id + ',' + organism_name + ',' + qstart + ',' + qend +
-                                   ',' + sstart + ',' + send)
+                                   ',' + sstart + ',' + send + ',' + str(identity) + ',' + str(qcoverage))
                 if query_id in count_dictionary:
                     count_dictionary[query_id] = count_dictionary[query_id]+1
                 else:
@@ -86,6 +95,8 @@ def main():
     # summaryParser(file_handle, working_list, sorted_dict)
     locationParser(file_handle, working_list)
     print('Finished!')
+    print(file_handle + '_locations.txt will hold the locations for referencing')
+    print(file_handle + '_results.txt will present the top 100 most frequent miRNAs in order')
     print('')
 
 main()
