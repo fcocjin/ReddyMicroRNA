@@ -110,7 +110,7 @@ def main():
     print('Finished!')
     print(file_handle + '_locations.txt will hold the locations for referencing')
     print(file_handle + '_results.txt will present the top 100 most frequent miRNAs in order')
-    print(blast_result_file + 'will hold the full BLAST result')
+    print(blast_result_file + ' will hold the full BLAST result')
     print('')
 
 main()
