@@ -18,11 +18,11 @@ def ToCSV(csv_file,csv_columns,dict_data):  # I don't know how to handle .csv's 
         print("I/O error({0}): {1}".format(errno, strerror))
     return
 
-def locationParser(file_handle, working_list):
+def locationParser(file_handle, working_list, organism_name):
     # This function takes in a file handle to write a uniform file name as well as the list of information to write
     # (file_handle)_locations.txt will hold all of this information
     # The locations are being saved separately in case the user cares about an miRNA not listed in the top 100
-    writer = open(file_handle + '_locations.txt', 'w')  # Creates the uniform file extension
+    writer = open(file_handle + '_' + organism_name + '_locations.txt', 'w')  # Creates the uniform file extension
     writer.write('Query_miRNA_ID' + ',' + 'Subject_ID' + ',' + 'Organism_name' + ',' + 'Query_start' + ',' +
                  'Query_end' + ',' + 'Subject_start' + ',' +
                  'Subject_end' + ',' + 'Percent_Identity' + ',' + 'Query_Coverage' +
@@ -57,16 +57,17 @@ def main():
         temp_string = '100.00'
         print('Since no value was inputted, BLAST will use the default percent identity of 100%')
     percent_identity = float(temp_string)  # The user can input a percent identity cutoff
-    organism_name = raw_input("What organism's genome is represented by the BLAST database?: ")
+    organism_name = raw_input("What organism's genome is represented by the BLAST database? (No spaces please): ")
     print('Now BLASTing')
-    blast_result_file = file_handle + '_full_BLAST_result.txt'
+    blast_result_file = file_handle + '_' + organism_name + '_full_BLAST_result.txt'
+    print('DATABASE = ' + database_name)
     os.system('blastn -task blastn-short -query ' + query + ' -db ' + database_name + ' -out '+ blast_result_file +
               ' -num_threads 8 -outfmt "6 std qcovs" ') #BLASTs from command line
     print('BLAST completed, now parsing file')
     count_dictionary ={}  # to hold the query id and the # of occurrences
     working_list = []  # This will hold summary information like location for ALL miRNA's
-    top100writer = open(file_handle + '_results.txt', 'w')  # This will write the top
-    with open('BLAST_result.txt', 'r') as input:  # Reads the results from the comma-separated BLAST output
+    top100writer = open(file_handle + '_' + organism_name + '_results.txt', 'w')  # This will write the top
+    with open(blast_result_file, 'r') as input:  # Reads the results from the comma-separated BLAST output
         for line in input:
             lineList = line.strip().split()
             query_id = lineList[0]
@@ -97,10 +98,10 @@ def main():
             top100writer.write(output)
     top100writer.close()
 
-    locationParser(file_handle, working_list)
+    locationParser(file_handle, working_list, organism_name)
     print('Finished!')
-    print(file_handle + '_locations.txt will hold the locations for referencing')
-    print(file_handle + '_results.txt will present the top 100 most frequent miRNAs in order')
+    print(file_handle + '_' + organism_name + '_locations.txt will hold the locations for referencing')
+    print(file_handle + '_' + organism_name + '_results.txt will present the top 100 most frequent miRNAs in order')
     print(blast_result_file + ' will hold the full BLAST result')
     print('')
 
