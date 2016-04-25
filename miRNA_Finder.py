@@ -51,7 +51,7 @@ def main():
 
     else:
         print("ok! We will BLAST against the chicken database as a default")
-        database_name = 'Input/gg_db'
+        database_name = 'gg_db'
     query = raw_input('Enter query file name: ')  # For the working example, type in 'gg_pre_mirna_short.fasta'
     file_handle = query[0:len(query)-6]  # Stores the original file name that we can add extension file names from
     temp_string = raw_input('What is your ideal cutoff query coverage?: ')
@@ -69,7 +69,7 @@ def main():
     print('Now BLASTing')
     blast_result_file = file_handle + '_full_BLAST_result.txt'
     os.system('blastn -task blastn-short -query ' + query + ' -db ' + database_name + ' -out '+ blast_result_file +
-              ' -num_threads 8 -outfmt "6 std qcovs" ')
+              ' -num_threads 8 -outfmt "6 std qcovs" ') #BLASTs from command line
     print('BLAST completed, now parsing file')
     count_dictionary ={}  # to hold the query id and the # of occurrences
     working_list = []  # This will hold summary information like location for ALL miRNA's
