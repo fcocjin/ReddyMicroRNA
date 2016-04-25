@@ -18,14 +18,6 @@ def ToCSV(csv_file,csv_columns,dict_data):  # I don't know how to handle .csv's 
         print("I/O error({0}): {1}".format(errno, strerror))
     return
 
-
-# def summaryParser(file_handle, working_list, sorded_dict):
-# This function will eventually help us write a consolidated summary file. I don't know what we want to put in it though
-# Right now I have the function taking in the file handle so that we can write a uniform file name as well as
-# the working list holding all of the information we wanted (locations in query and subject)
-# The sorted dictionary will be used as a reference so that we can write the information for the top 100 results
-
-
 def locationParser(file_handle, working_list):
     # This function takes in a file handle to write a uniform file name as well as the list of information to write
     # (file_handle)_locations.txt will hold all of this information
@@ -105,7 +97,6 @@ def main():
             top100writer.write(output)
     top100writer.close()
 
-    # summaryParser(file_handle, working_list, sorted_dict)
     locationParser(file_handle, working_list)
     print('Finished!')
     print(file_handle + '_locations.txt will hold the locations for referencing')
