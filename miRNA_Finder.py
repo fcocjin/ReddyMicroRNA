@@ -5,18 +5,18 @@ import operator
 from collections import Counter
 import os
 
-def ToCSV(csv_file,csv_columns,dict_data):  # I don't know how to handle .csv's so I'm hoping Amani can help....
-    try:
-        with open('Output_myedit.csv', 'w') as csv_file:
-            writer = csv.DictWriter(csv_file, fieldnames=csv_columns)   # the output as a CSV Format
-            writer.writeheader()
-            # write the the query id and the # of occurrences
-            # write the number of the occurance in descending order
-            for key, value in sorted(dict_data.iteritems(), key=lambda (k,v): (v,k), reverse=True):
-                writer.writerow({'query_id': key, 'count': value})
-    except IOError as (errno, strerror):
-        print("I/O error({0}): {1}".format(errno, strerror))
-    return
+# def ToCSV(csv_file,csv_columns,dict_data):  # I don't know how to handle .csv's so I'm hoping Amani can help....
+#     try:
+#         with open('Output_myedit.csv', 'w') as csv_file:
+#             writer = csv.DictWriter(csv_file, fieldnames=csv_columns)   # the output as a CSV Format
+#             writer.writeheader()
+#             # write the the query id and the # of occurrences
+#             # write the number of the occurance in descending order
+#             for key, value in sorted(dict_data.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+#                 writer.writerow({'query_id': key, 'count': value})
+#     except IOError as (errno, strerror):
+#         print("I/O error({0}): {1}".format(errno, strerror))
+#     return
 
 def locationParser(file_handle, working_list, organism_name):
     # This function takes in a file handle to write a uniform file name as well as the list of information to write
@@ -40,6 +40,7 @@ def main():
         output = raw_input("Please enter the full path to the output destination: ")
         database_name = raw_input("Please enter the name of your database: ")
         os.system("makeblastdb -in " + path + " -dbtype " + dbtype + " -out " + output)
+        # creates the database through the command line
 
     else:
         print("ok! We will BLAST against the chicken database as a default")
@@ -58,11 +59,13 @@ def main():
         print('Since no value was inputted, BLAST will use the default percent identity of 100%')
     percent_identity = float(temp_string)  # The user can input a percent identity cutoff
     organism_name = raw_input("What organism's genome is represented by the BLAST database? (No spaces please): ")
+    if ' ' in organism_name:
+        organism_name = organism_name.replace(' ', '_')
     print('Now BLASTing')
     blast_result_file = file_handle + '_' + organism_name + '_full_BLAST_result.txt'
     print('DATABASE = ' + database_name)
     os.system('blastn -task blastn-short -query ' + query + ' -db ' + database_name + ' -out '+ blast_result_file +
-              ' -num_threads 8 -outfmt "6 std qcovs" ') #BLASTs from command line
+              ' -num_threads 8 -outfmt "6 std qcovs" ')  # BLASTs from command line
     print('BLAST completed, now parsing file')
     count_dictionary ={}  # to hold the query id and the # of occurrences
     working_list = []  # This will hold summary information like location for ALL miRNA's
@@ -78,7 +81,7 @@ def main():
             qend = lineList[7]
             sstart = lineList[8]
             send = lineList[9]
-            if identity >= percent_identity  and (qcoverage >= query_coverage):  # Filters for quality
+            if identity >= percent_identity and (qcoverage >= query_coverage):  # Filters for quality
                 working_list.append(query_id + ',' + subject_id + ',' + organism_name + ',' + qstart + ',' + qend +
                                    ',' + sstart + ',' + send + ',' + str(identity) + ',' + str(qcoverage))
                 if query_id in count_dictionary:
