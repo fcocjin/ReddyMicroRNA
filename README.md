@@ -21,6 +21,7 @@
     * [Output](#output)
     * [GUI](#gui)
     * [Command Line](#commandline)
+
 ___
 
 # Introduction <a id="introduction"></a>
@@ -147,11 +148,21 @@ Next, AvianScreen allows you to name the database you just created. This name mu
 
 `scamelus`
 
-If a "No" or no response is registered for creating the database, the program will automatically select the Gallus gallus database to use. Next, the program will ask the user for their ideal cutoffs for query coverage and percent identity.
->What is your ideal cutoff query coverage? What is your ideal cutoff percent identity?
+If a "No" or no response is registered for creating the database, the program will automatically select the Gallus gallus database to use. 
+
+After loading the appropriate database, the program will ask for the query file (miRNA data).
+>Enter query file name:
+
+`gg_mat_mirna.fasta`
+
+Next, the program will ask the user for their ideal cutoffs for query coverage and percent identity separately.
+>What is your ideal cutoff query coverage?
+
+>What is your ideal cutoff percent identity?
 
 If no value is entered, default values will be used:
 >Since no value was inputted, BLAST will not filter by query coverage 
+
 
 >Since no value was inputted, BLAST will not filter by percent identity
 
