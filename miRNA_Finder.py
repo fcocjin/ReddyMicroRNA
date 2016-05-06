@@ -57,9 +57,9 @@ def main():
     if temp_string != '':
         percent_identity = float(temp_string)  # The user can input a percent identity cutoff
     else:
-        print('Since no value was inputted, BLAST not filter by percent identity')
+        print('Since no value was inputted, BLAST will not filter by percent identity')
         percent_identity = 0
-    temp_string = raw_input('What is your ideal cutoff E-value')
+    temp_string = raw_input('What is your ideal cutoff E-value: ')
     if temp_string != '':
         expectedvalue = float(temp_string)  # The user can input a percent identity cutoff
     else:
