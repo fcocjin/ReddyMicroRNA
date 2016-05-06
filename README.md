@@ -59,6 +59,7 @@ In order for the program to run you must have BLAST+, Python 2.7 or above, and t
         * _genus_species.fasta_
         * _genus_species.db_
     * Please view the **Instructions** section for additional information on program scripts.
+
 ___
 
 # Instructions <a id="instructions"></a>
@@ -153,7 +154,7 @@ If a "No" or no response is registered for creating the database, the program wi
 After loading the appropriate database, the program will ask for the query file (miRNA data).
 >Enter query file name:
 
-`gg_mat_mirna.fasta`
+`gg_pre_mirna_short.fasta`
 
 Next, the program will ask the user for their ideal cutoffs for query coverage and percent identity separately.
 >What is your ideal cutoff query coverage?
