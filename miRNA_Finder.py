@@ -1,22 +1,6 @@
 #!/Library/Frameworks/Python.framework/Versions/2.7/bin/python
 
-import csv
-import operator
-from collections import Counter
 import os
-
-# def ToCSV(csv_file,csv_columns,dict_data):  # I don't know how to handle .csv's so I'm hoping Amani can help....
-#     try:
-#         with open('Output_myedit.csv', 'w') as csv_file:
-#             writer = csv.DictWriter(csv_file, fieldnames=csv_columns)   # the output as a CSV Format
-#             writer.writeheader()
-#             # write the the query id and the # of occurrences
-#             # write the number of the occurance in descending order
-#             for key, value in sorted(dict_data.iteritems(), key=lambda (k,v): (v,k), reverse=True):
-#                 writer.writerow({'query_id': key, 'count': value})
-#     except IOError as (errno, strerror):
-#         print("I/O error({0}): {1}".format(errno, strerror))
-#     return
 
 def locationParser(file_handle, working_list, organism_name):
     # This function takes in a file handle to write a uniform file name as well as the list of information to write
