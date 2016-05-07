@@ -1,9 +1,10 @@
-# **AvianScreen: A miRNA Screening Tool**
+# **miRNAFinder: A miRNA Screening Tool**
 ---
 #####
 ##### Created By: Amani Almatrafi, Kelly Boyd, Francis Cocjin and Michael Courtois 
 ##### Loyola Univerisity Chicago: Department of Biology and Computer Science
 ##### COMP 383: Computational Biology | Spring 2016 | Dr. Heather E. Wheeler 
+##### GitHub: https://github.com/fcocjin/ReddyMicroRNA
 #
 ![LUC](http://www.luc.edu/media/home/images/loyola-logo-tag.png)
 
@@ -19,24 +20,24 @@
     * [Input 1: miRNA Sequences](#input1)
     * [Input 2: Genomic Database](#input2)
     * [Output](#output)
-    * [GUI](#gui)
     * [Command Line](#commandline)
+    * [GUI](#gui)
 
 ___
 
 # Introduction <a id="introduction"></a>
 
-Welcome to AvianScreen! AvianScreen is a python-based application for screening microRNAs against avian genomes.  This program originated as a project from [Dr. Reddy's Lab](http://www.reddylab.com/index.html) at Loyola University Chicago in collaboration with [Dr. Wheeler's](https://hwheeler01.github.io/) Computation Biology class.
+Welcome to miRNAFinder! miRNAFinder is a python-based application for screening microRNAs against avian genomes.  This program originated as a project from [Dr. Reddy's Lab](http://www.reddylab.com/index.html) at Loyola University Chicago in collaboration with [Dr. Wheeler's](https://hwheeler01.github.io/) Computation Biology class.
 
 MicroRNAs (miRNAs) are regulatory ribonucleic acids, ~22 nucleotides in length, common to plants and animals that serve in gene silencing and regulating post-transcriptional gene expression.  Due to their low-mutation rate and high evolutionary conservation, miRNAs serve as effective markers in phylogenetic studies.  Unfortunately, there is a severe annotation bottleneck of miRNA data, especially in class Aves.  Many computational tools such as _miRExplorer_ that exist discover new miRNA sequences _in silico_ based on physical characteristics.  However, their _in silico_ screening techniques of miRNAs are not favorable for miRNA screening and phylogenetic analysis of avian genomes. Using a local blast index of precursor and mature miRNA sequences of _Gallus gallus_ and _Taeniopygia guttata_ from miRBase, we have developed a tool to screen unannotated avian genomes of interest to identify novel and pre-existing miRNAs sequences and assist in performing phylogenetic analysis.  The python-based tool takes advantage of BioPython modules for simple data parsing and BLAST compatibility.  Run-time and memory usage are consistent with other BLAST applications of this nature when tested against pre-existing data for _Gallus gallus_.
 
 
-For additional background and detailed information on our application please view the [application note].
+For additional background and detailed information on our application please view the [application note and presentation](https://drive.google.com/folderview?id=0B51XeDdO69cnR1FoSU1nc0pkbWs&usp=sharing).
 ___
 
 # Quick Start <a id="quickstart"></a>
 
-MicroRNA AvianScreen can be used either through command line or GUI.  However, before you begin please make sure you have the proper hardware and software requirements needed to run the program.  This information can be found in the Setup section of this document.  Detailed instructions on how to use AvianScreen can be found in the Instructions section of this document.  With all relevant files in the current directory, run the `miRNA_Finder.py` through a python terminal and follow the program prompts. 
+miRNAFinder can be used either through command line or GUI.  However, before you begin please make sure you have the proper hardware and software requirements needed to run the program.  This information can be found in the Setup section of this document.  Detailed instructions on how to use AvianScreen can be found in the Instructions section of this document.  With all relevant files in the current directory, run the `miRNA_Finder.py` through a python terminal and follow the program prompts. 
 ___
 
 # Setup <a id="setup"></a>
@@ -53,7 +54,7 @@ In order for the program to run you must have BLAST+, Python 2.7 or above, and t
     * This code was created and tested using Python 2.7.  DISCLAIMER: The program has not been tested or used on other versions of Python.  User may run into some syntatical issues using other versions of Python. These issues should be easy to fix.  Detailed information on the syntax of the code is included in this ReadMe file for your convience. 
     * The [Python](https://www.python.org/) website has detailed information on the Python programming language.  Python 2.7.11 installation instructions can be found [here](https://www.python.org/downloads/release/python-2711/).
 * MicroRNA AvianScreen Scripts
-    * All files and scripts needed to run AvianScreen can be found on this [GitHub](https://github.com/fcocjin/ReddyMicroRNA.git).  The program can either be run using command line or the provided GUI. 
+    * All scripts needed to run miRNAFinder can be found on this [GitHub](https://github.com/fcocjin/ReddyMicroRNA.git).  All relevant files can be found on this [Google Drive](https://drive.google.com/folderview?id=0B51XeDdO69cnR1FoSU1nc0pkbWs&usp=sharing).  The program can either be run using command line or the provided GUI. 
     * The python scripts neededed are:
         * `miRNA_Finder.py`
         * _genus_species.fasta_
@@ -64,11 +65,11 @@ ___
 
 # Instructions <a id="instructions"></a>
 
-Once you have the proper software downloaded on your computer, you are ready to begin! There are two ways to run AvianScreen, through the GUI or command line. The GUI provides full functionality and is geared towards the average user.  More experienced users and programmers, however, may find command line easier and more robust to use. 
+Once you have the proper software downloaded on your computer, you are ready to begin! There are two ways to run miRNAFinder, through the GUI or command line. The GUI provides full functionality and is geared towards the average user.  More experienced users and programmers, however, may find command line easier and more robust to use.  Again, all scripts referenced in the instructions can be found on our [GitHub](https://github.com/fcocjin/ReddyMicroRNA) and all sequence files can be found on [Google Drive](https://drive.google.com/folderview?id=0B51XeDdO69cnR1FoSU1nc0pkbWs&usp=sharing). 
 
 ### Overview <a id="overview"></a>
 
-AvianScreen takes in miRNA sequences, either precursor or mature, from avian species and BLASTs the query against unannotated avian genomes.  Three files are outputted containing the BLAST results.  One file contains the complete BLAST results from the program.  The other files relay the top 100 hits to the user and genomic locations for reference.    
+miRNAFinder takes in miRNA sequences, either precursor or mature, from avian species and BLASTs the query against unannotated avian genomes.  Three files are outputted containing the BLAST results.  One file contains the complete BLAST results from the program.  The other files relay the top 100 hits to the user and genomic locations for reference.    
 
 ### Input 1: miRNA Sequences <a id="input1"></a>
 
@@ -88,7 +89,7 @@ Example input files, used for testing and initial research, described above can 
 
 ### Input 2: Genomic Database <a id="input2"></a>
 
-In addition, AvianScreen takes in a unannotated database created through BLAST+.  The program comes standard with some databases detailed below or the program can take in your own database.  If you do not have a database, AvianScreen can create a database from the FASTA file of your choice.  If no database is selected, the program will default to the Gallus gallus database provided.  HINT: Only one database can be accepted as input.  Please append all records from multiple organisms into one file in order to create a properly formatted database.  
+In addition, miRNAFinder takes in a unannotated database created through BLAST+.  The program comes standard with some databases detailed below or the program can take in your own database.  If you do not have a database, miRNAFinder can create a database from the FASTA file of your choice.  If no database is selected, the program will default to the Gallus gallus database provided.  HINT: Only one database can be accepted as input.  Please append all records from multiple organisms into one file in order to create a properly formatted database.  
 
 | File | Description |
 | ---- | ----------- |
@@ -112,9 +113,6 @@ Once the program receives the necessary input and user parameters, it will begin
 
 Example output files, used for testing and initial research, described above can be found [here](https://drive.google.com/folderview?id=0B51XeDdO69cnUGdwWmE5Y3d3elU&usp=sharing&tid=0B51XeDdO69cnR1FoSU1nc0pkbWs#grid).
 
-### GUI <a id="gui"></a>
-
-The GUI provides full AvianScreen functionaltiy in a easy, user-friendly means. To load the GUI, HOLD. Once the GUI application is open, use the dropdown menus to select the appropriate input files.     
 
 ### Command Line <a id="commandline"></a>
 
@@ -122,7 +120,7 @@ To run the program, open a terminal window and change the current directory to t
 
 `cd /Users/Francis/Desktop/ReddyMicroRNA`
 
-Once the directory is changed, you need to initiate Python and AvianScreen. Enter "python miRNA_Finder.py" to run the file.
+Once the directory is changed, you need to initiate Python and miRNAFinder. Enter "python miRNA_Finder.py" to run the file.
 
 `python miRNA_Finder.py`
 
@@ -193,11 +191,25 @@ The program will then output two files when completed.
 
 >gg_pre_mirna_short_full_BLAST_result.txt will hold the full BLAST result
 
+### GUI <a id="gui"></a>
 
+The GUI provides full miRNAFinder functionaltiy in a easy, user-friendly means. _Please read through the command line instructions to get a basic sense of the program before running the GUI._ To load the GUI, go to our [GitHub](https://github.com/fcocjin/ReddyMicroRNA) to download the GUI files as described below.
 
+To start the server, run the `go.sh` file through the command line.Then type the  http://localhost:8080/webserver.html in the browser. The user has the choice to create a database and/or blast using two separate forms in the same page. 
 
+The first form is to create the database : the form accepts three inputs: file for creating the DataBase ,the database type and the Output name
 
+The second form for the blase accepts also three inputs: MiRNA Query File, Database, Output Name 
 
+Since the blast command takes time: process.py is script to check if the command is still running or not. This script is not yet implement in the GUI. However, it works individually.
+
+To stop the server, run the `stop.sh` file through the command line.
+
+Since this gui is still for local use, the user has to type his/her own path in the the webserver.py just for the first time.
+
+As mentioned above, once the GUI application is open, you will notice the various drop down menus.  First, use the dropdown menus to select the appropriate input files.  The GUI possesses the ability to create a database as well.  Once you submit the appropriate database, you can select your query file. Once both inputs are selected, you can run the program.  Once ready, a table will appear showing the BLAST results.  In addition, a folder called _Jobs_ will have been created which hold the three output files mentioned previously in the **Instructions**.  You can use the GUI to go through the results while still having access to the .txt files for further analysis.
+
+In the linked Google Drive page you will find a presentation of our research.  It is highly recommended to review the presentation before operating the program.  Specifically, the presentation contains a video showing the functionality of the GUI. 
 
 
 
